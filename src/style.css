@@ -1,8 +1,8 @@
-body {
-  background-color: rgb(36, 36, 36);
+canvas {
+  border: 1px solid black;
+
 }
 
-#app {
-  color: white;
-  font-size: 2rem;
+body {
+  margin: 0;
 }
