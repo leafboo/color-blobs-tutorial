@@ -35,6 +35,29 @@ let c = canvas.getContext('2d')!;
 // }
 
 // animation
+let mouse = {
+  x: undefined as number | undefined,
+  y: undefined as number | undefined
+}
+
+let maxRadius = 40;
+
+let colors = [
+  '#606c38',
+  '#283618',
+  '#fefae0',
+  '#dda15e',
+  '#bc6c25'
+]
+
+window.addEventListener('mousemove', (event) => {
+  mouse.x = event.x;
+  mouse.y = event.y;
+  console.log(mouse)
+})
+
+
+
 interface Circle {
   x: number;
   y: number;
@@ -43,6 +66,8 @@ interface Circle {
   radius: number;
   draw: () => void;
   update: () => void;
+  color:string;
+  minRadius:number;
   
 }
  
@@ -53,14 +78,16 @@ function createCircle(x: number, y: number, dx: number, dy: number, radius: numb
     dx: dx,
     dy: dy,
     radius:radius,
-    draw: function() {
+    minRadius:radius,
+    color:colors[Math.floor(Math.random() * colors.length)],
+    draw: function(): void {
       c.beginPath();
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      c.strokeStyle = 'blue';
-      c.stroke();
+      c.fillStyle = this.color
+      c.fill()
       this.update()
     },
-    update: function() {
+    update: function(): void {
       if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
         this.dx = -this.dx
       }
@@ -70,6 +97,16 @@ function createCircle(x: number, y: number, dx: number, dy: number, radius: numb
     
       this.x += this.dx
       this.y += this.dy
+
+      if (mouse.x && mouse.y) {
+        if (mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50 && this.radius <= maxRadius) {
+          this.radius += 1;
+        } else if (this.radius >= this.minRadius) {
+          this.radius -= 1
+        }
+        
+      }
+      
     }
   };
   return circle;
@@ -78,11 +115,10 @@ function createCircle(x: number, y: number, dx: number, dy: number, radius: numb
 
 
 
-let circle: any;
 let circleArray: any = [];
 
-for (let i = 0; i < 100; i++) {
-  let radius = 30;
+for (let i = 0; i < 600; i++) {
+  let radius = Math.random() * 3 + 1;
   let x = Math.random() * (innerWidth - radius * 2) + radius;
   let y = Math.random() * (innerHeight - radius * 2) + radius;
   let dx = (Math.random() - 0.5);
@@ -93,7 +129,7 @@ for (let i = 0; i < 100; i++) {
 
 
 
-function animate() {
+function animate(): void {
   requestAnimationFrame(animate)
   c.clearRect(0, 0, innerWidth, innerHeight)
 
@@ -103,4 +139,4 @@ function animate() {
 }
 
 
-//animate()
+animate()
