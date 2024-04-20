@@ -2,9 +2,6 @@ import './style.css'
 
 let canvas = document.querySelector('canvas')!;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
 let c = canvas.getContext('2d')!;
 
 // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
@@ -56,7 +53,10 @@ window.addEventListener('mousemove', (event) => {
   console.log(mouse)
 })
 
-
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+})
 
 interface Circle {
   x: number;
@@ -117,7 +117,7 @@ function createCircle(x: number, y: number, dx: number, dy: number, radius: numb
 
 let circleArray: any = [];
 
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 1200; i++) {
   let radius = Math.random() * 3 + 1;
   let x = Math.random() * (innerWidth - radius * 2) + radius;
   let y = Math.random() * (innerHeight - radius * 2) + radius;
